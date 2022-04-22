@@ -13,10 +13,25 @@ const MovieItem = ({ movie }: Props) => {
     movie.title || movie.original_title || "Unknown Movie Title"
   );
 
+  const [releaseDate] = useState(
+    new Date(movie.release_date).getFullYear() || "N/A"
+  );
+
+  const [rating] = useState(movie.vote_average.toFixed(1));
+
+  function convertRating() {
+    if (!rating || Number(rating) == 0) return "N/A";
+    return rating;
+  }
+
   function buildPosterPath() {
     return movie.poster_path
       ? `${BASE_IMG_URL}${movie.poster_path}`
       : defaultImage;
+  }
+
+  function highlightRow() {
+    return alert("clicked");
   }
 
   function makeSlug(title: string) {
@@ -37,6 +52,19 @@ const MovieItem = ({ movie }: Props) => {
           <img src={buildPosterPath()} alt={movieTitle + " poster"} />
         </div>
         <p className={styles.title}>{movieTitle}</p>
+        <div className={styles.bottom}>
+          <div className={styles.row}>
+            <p>{releaseDate}</p> •
+            <p className={styles.rating}>R: {convertRating()}</p>
+          </div>
+          <span
+            className={styles.star}
+            onClick={(e) => {
+              e.stopPropagation();
+              highlightRow();
+            }}
+          />
+        </div>
       </div>
     </a>
   );
