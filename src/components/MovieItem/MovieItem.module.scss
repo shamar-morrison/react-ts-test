@@ -3,7 +3,6 @@
   max-width: 175px;
   height: 250px;
   border-radius: 8px;
-  cursor: pointer;
   margin-bottom: 80px;
 }
 
@@ -12,6 +11,7 @@
   height: 100%;
   overflow: hidden;
   border-radius: 8px;
+  cursor: pointer;
 
   img {
     position: relative;
@@ -58,4 +58,5 @@
   color: gold;
   height: 20px;
   aspect-ratio: 1/1;
+  cursor: pointer;
 }

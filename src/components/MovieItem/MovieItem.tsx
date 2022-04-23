@@ -6,9 +6,10 @@ import { useState } from "react";
 
 interface Props {
   movie: MovieResult;
+  highlightRow: () => void;
 }
 
-const MovieItem = ({ movie }: Props) => {
+const MovieItem = ({ movie, highlightRow }: Props) => {
   const [movieTitle] = useState(
     movie.title || movie.original_title || "Unknown Movie Title"
   );
@@ -30,10 +31,6 @@ const MovieItem = ({ movie }: Props) => {
       : defaultImage;
   }
 
-  function highlightRow() {
-    return alert("clicked");
-  }
-
   function makeSlug(title: string) {
     return title
       .toLowerCase()
@@ -43,30 +40,24 @@ const MovieItem = ({ movie }: Props) => {
   const slug = makeSlug(movieTitle);
 
   return (
-    <a
-      href={`https://www.themoviedb.org/movie/${movie.id}-${slug}`}
-      target="_blank"
-    >
-      <div className={styles.container}>
+    <div className={styles.container}>
+      <a
+        href={`https://www.themoviedb.org/movie/${movie.id}-${slug}`}
+        target="_blank"
+      >
         <div className={styles.movieImage}>
           <img src={buildPosterPath()} alt={movieTitle + " poster"} />
         </div>
-        <p className={styles.title}>{movieTitle}</p>
-        <div className={styles.bottom}>
-          <div className={styles.row}>
-            <p>{releaseDate}</p> •
-            <p className={styles.rating}>R: {convertRating()}</p>
-          </div>
-          <span
-            className={styles.star}
-            onClick={(e) => {
-              e.stopPropagation();
-              highlightRow();
-            }}
-          />
+      </a>
+      <p className={styles.title}>{movieTitle}</p>
+      <div className={styles.bottom}>
+        <div className={styles.row}>
+          <p>{releaseDate}</p> •
+          <p className={styles.rating}>R: {convertRating()}</p>
         </div>
+        <span className={styles.star} onClick={highlightRow} />
       </div>
-    </a>
+    </div>
   );
 };
 
