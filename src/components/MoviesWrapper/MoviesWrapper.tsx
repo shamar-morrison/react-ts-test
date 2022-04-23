@@ -1,21 +1,24 @@
 import styles from "./MoviesWrapper.module.scss";
 import MovieItem from "src/components/MovieItem/MovieItem";
 import { useEffect, useState } from "react";
-import { MovieResult, Result } from "src/types";
+import { MovieResult, Result } from "src/utils/types";
 import Filter from "src/components/Filter/Filter";
 
 const MAX_NUM_OF_PAGES = 500;
 const LOCAL_STORAGE_KEY = "BGColor";
 
+export type FilterType = "popularity.desc" | "popularity.asc";
+
 const MoviesWrapper = () => {
   const [curPage, setCurPage] = useState(1);
+  const [filterType, setFilterType] = useState<FilterType>("popularity.desc");
   const [movies, setMovies] = useState<MovieResult[]>([]);
   const [BGColor, setBGColor] = useState({});
 
   async function getMovieList(): Promise<Result> {
     try {
       const data = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API}&language=en-US&page=${curPage}`
+        `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API}&language=en-US&sort_by=${filterType}&page=${curPage}`
       );
 
       if (data.status !== 200) throw Error("Error fetching movies");
@@ -29,6 +32,10 @@ const MoviesWrapper = () => {
 
   function loadMore() {
     setCurPage((prev) => prev + 1);
+  }
+
+  function setFilter(type: FilterType) {
+    setFilterType(type);
   }
 
   function LoadMoreBtn() {
@@ -71,6 +78,16 @@ const MoviesWrapper = () => {
     setBGColor(JSON.parse(value));
   }
 
+   function applySearchFilters() {
+    fetch(
+      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API}&language=en-US&sort_by=${filterType}&page=1`
+    )
+      .then((data) => data.json())
+      .then((res: Result) => setMovies([...res.results]))
+      .catch((er) => console.error(er.message));
+    window.scrollTo(0, 0);
+  }
+
   useEffect(() => fetchFromLocalStorage(), []);
 
   useEffect(() => {
@@ -90,7 +107,7 @@ const MoviesWrapper = () => {
   return (
     <>
       <div className={styles.container} style={BGColor}>
-        <Filter />
+        <Filter setFilter={setFilter} applyFilters={applySearchFilters} />
         <div className={styles.flexRow}>
           {movies.map((movie) => (
             <MovieItem

@@ -1,6 +1,6 @@
 import styles from "./MovieItem.module.scss";
-import { MovieResult } from "src/types";
-import { BASE_IMG_URL } from "./../../paths";
+import { MovieResult } from "src/utils/types";
+import { BASE_IMG_URL } from "src/utils/paths";
 import defaultImage from "src/img/noImgFound.png";
 import { useState } from "react";
 
