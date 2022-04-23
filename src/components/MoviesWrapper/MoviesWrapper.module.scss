@@ -1,15 +1,16 @@
 .container {
   position: relative;
   display: flex;
-  gap: 30px;
   flex-wrap: wrap;
   margin-top: 30px;
-  justify-content: center;
+  justify-content: space-between;
   padding: 25px 0;
 }
+
 .flexCenter {
   display: flex;
   justify-content: center;
+  text-align: center;
   margin-top: 30px;
 }
 
@@ -20,4 +21,12 @@
   border-radius: 50px;
   padding: 8px 35px;
   cursor: pointer;
+}
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 85%;
+  gap: 30px;
+  justify-content: center;
 }

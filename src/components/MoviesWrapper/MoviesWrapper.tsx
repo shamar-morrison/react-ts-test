@@ -2,6 +2,7 @@ import styles from "./MoviesWrapper.module.scss";
 import MovieItem from "src/components/MovieItem/MovieItem";
 import { useEffect, useState } from "react";
 import { MovieResult, Result } from "src/types";
+import Filter from "src/components/Filter/Filter";
 
 const MAX_NUM_OF_PAGES = 500;
 const LOCAL_STORAGE_KEY = "BGColor";
@@ -89,9 +90,16 @@ const MoviesWrapper = () => {
   return (
     <>
       <div className={styles.container} style={BGColor}>
-        {movies.map((movie) => (
-          <MovieItem key={movie.id} movie={movie} highlightRow={highlightRow} />
-        ))}
+        <Filter />
+        <div className={styles.flexRow}>
+          {movies.map((movie) => (
+            <MovieItem
+              key={movie.id}
+              movie={movie}
+              highlightRow={highlightRow}
+            />
+          ))}
+        </div>
       </div>
       <LoadMoreBtn />
     </>
