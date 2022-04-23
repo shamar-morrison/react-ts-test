@@ -22,12 +22,20 @@
 }
 
 .filterBtn {
-  background-color: #fff;
+  background-color: hsl(357, 92%, 47%);
+  color: #fff;
+  font-weight: 600;
   padding: 8px 30px;
-  border-radius: 10px;
+  border-radius: 5px;
   margin-top: 20px;
   text-align: center;
+  transition: transform 300ms ease-in-out;
   &:hover {
-    background-color: rgb(209, 209, 209);
+    transform: scale(.95);
   }
+}
+
+.filterBtn:disabled {
+  background-color: hsl(357, 92%, 67%);
+  cursor: not-allowed;
 }

@@ -79,14 +79,21 @@ const MoviesWrapper = () => {
   }
 
    function applySearchFilters() {
-    fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API}&language=en-US&sort_by=${filterType}&page=1`
-    )
-      .then((data) => data.json())
-      .then((res: Result) => setMovies([...res.results]))
-      .catch((er) => console.error(er.message));
-    window.scrollTo(0, 0);
-  }
+     setMovies([]);
+     fetch(
+       `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API}&language=en-US&sort_by=${filterType}&page=1`
+     )
+       .then((data) => {
+         try {
+           if (data.status !== 200) throw Error("Error applying filters");
+           return data.json();
+         } catch (error: any) {
+           console.error(error.message);
+         }
+       })
+       .then((res: Result) => setMovies([...res.results]))
+       .catch((er) => console.error(er.message));
+   }
 
   useEffect(() => fetchFromLocalStorage(), []);
 
