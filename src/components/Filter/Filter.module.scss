@@ -1,16 +1,38 @@
+@use 'src/styles/responsive';
+
 .container {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   position: sticky;
   top: 15px;
   height: max-content;
   margin: 0 auto;
+
+  @include responsive.desktop-md {
+    margin-bottom: 50px;
+    gap: 20px;
+    align-items: center;
+    flex-direction: row;
+    position: relative;
+    top: auto;
+    height: auto;
+  }
+
+  @include responsive.screen-sm {
+    flex-direction: column;
+    gap: 10px;
+  }
 
   select {
     background-color: #fff;
     padding: 10px 15px;
     border-radius: 3px;
     font-size: 1rem;
+
+    @include responsive.desktop-md {
+      padding: 7px 15px;
+    }
   }
 
   p {
@@ -30,8 +52,13 @@
   margin-top: 20px;
   text-align: center;
   transition: transform 300ms ease-in-out;
+
   &:hover {
     transform: scale(.95);
+  }
+
+  @include responsive.desktop-md {
+    margin-top: 0;
   }
 }
 

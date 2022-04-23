@@ -1,3 +1,5 @@
+@use 'src/styles/responsive';
+
 .container {
   position: relative;
   display: flex;
@@ -5,6 +7,11 @@
   margin-top: 30px;
   justify-content: space-between;
   padding: 25px 0;
+
+  @include responsive.desktop-md {
+    flex-direction: column;
+  }
+
 }
 
 .flexCenter {
@@ -22,11 +29,13 @@
   padding: 8px 35px;
   cursor: pointer;
 }
+
 .loadMore:disabled {
   background-color: #6f6e77;
   color: #1e1d22;
   cursor: not-allowed;
 }
+
 .flexRow {
   display: flex;
   flex-direction: row;
@@ -34,11 +43,18 @@
   flex-basis: 85%;
   gap: 30px;
   justify-content: center;
+
+  @include responsive.desktop-md {
+    flex-basis: auto;
+  }
 }
+
 .fetchingMovies {
   display: grid;
   place-items: center;
   color: #fff;
   font-weight: 600;
   font-size: 1.5rem;
+
+
 }

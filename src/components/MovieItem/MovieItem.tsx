@@ -20,7 +20,7 @@ const MovieItem = ({ movie, highlightRow }: Props) => {
 
   const [rating] = useState(movie.vote_average.toFixed(1));
 
-  function convertRating() {
+  function convertRating(): string {
     if (!rating || Number(rating) == 0) return "N/A";
     return rating;
   }
@@ -31,7 +31,7 @@ const MovieItem = ({ movie, highlightRow }: Props) => {
       : defaultImage;
   }
 
-  function makeSlug(title: string) {
+  function makeSlug(title: string): string {
     return title
       .toLowerCase()
       .replace(/[^\w ]+/g, "")

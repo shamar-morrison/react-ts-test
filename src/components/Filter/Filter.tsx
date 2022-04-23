@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { FilterType } from "src/components/MoviesWrapper/MoviesWrapper";
 import styles from "./Filter.module.scss";
 
@@ -23,7 +24,7 @@ const Filter = ({ setFilter, applyFilters }: Props) => {
       >
         <option value="popularity.desc">Most Popular</option>
         <option value="popularity.asc">Least Popular</option>
-      </select>
+      </select>{" "}
       <button
         className={styles.filterBtn}
         onClick={() => {
@@ -31,7 +32,7 @@ const Filter = ({ setFilter, applyFilters }: Props) => {
           applyFilters();
           setIsDisabled(true);
         }}
-        disabled={isDisabled ? true : false}
+        disabled={isDisabled}
       >
         Apply
       </button>

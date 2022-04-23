@@ -15,7 +15,7 @@ const MoviesWrapper = () => {
   const [movies, setMovies] = useState<MovieResult[]>([]);
   const [BGColor, setBGColor] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [fetchingMovies, setFetchingMovies] = useState(false);
+  const [fetchingMovies, setFetchingMovies] = useState(true);
 
   async function getMovieList(): Promise<Result> {
     setIsLoading(true);
@@ -37,15 +37,15 @@ const MoviesWrapper = () => {
     }
   }
 
-  function loadMore() {
+  function loadMore(): void {
     setCurPage((prev) => prev + 1);
   }
 
-  function setFilter(type: FilterType) {
+  function setFilter(type: FilterType): void {
     setFilterType(type);
   }
 
-  function LoadMoreBtn() {
+  function LoadMoreBtn(): JSX.Element {
     if (curPage <= MAX_NUM_OF_PAGES && movies.length) {
       return (
         <div className={styles.flexCenter} onClick={loadMore}>
@@ -59,7 +59,7 @@ const MoviesWrapper = () => {
     return <></>;
   }
 
-  function highlightRow() {
+  function highlightRow(): void {
     const BGColor = { backgroundColor: "#3a1616" };
 
     setBGColor((state) => {
@@ -81,13 +81,13 @@ const MoviesWrapper = () => {
     });
   }
 
-  function fetchFromLocalStorage() {
+  function fetchFromLocalStorage(): void {
     const value = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (!value) return;
     setBGColor(JSON.parse(value));
   }
 
-  function applySearchFilters() {
+  function applySearchFilters(): void {
     setMovies([]);
     setFetchingMovies(true);
     setIsLoading(true);
@@ -146,6 +146,6 @@ const MoviesWrapper = () => {
       <LoadMoreBtn />
     </>
   );
-};
+};;
 
 export default MoviesWrapper;
