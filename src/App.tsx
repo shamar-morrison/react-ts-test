@@ -1,7 +1,5 @@
 import styles from "./App.module.scss";
 import MoviesWrapper from "./components/MoviesWrapper/MoviesWrapper";
-import { useState } from "react";
-import Filter from "src/components/Filter/Filter";
 
 const App = () => {
   return (

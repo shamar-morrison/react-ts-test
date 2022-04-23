@@ -14,8 +14,12 @@ const MoviesWrapper = () => {
   const [filterType, setFilterType] = useState<FilterType>("popularity.desc");
   const [movies, setMovies] = useState<MovieResult[]>([]);
   const [BGColor, setBGColor] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchingMovies, setFetchingMovies] = useState(false);
 
   async function getMovieList(): Promise<Result> {
+    setIsLoading(true);
+    setFetchingMovies(true);
     try {
       const data = await fetch(
         `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API}&language=en-US&sort_by=${filterType}&page=${curPage}`
@@ -27,6 +31,9 @@ const MoviesWrapper = () => {
     } catch (error: any) {
       console.error(error.message);
       throw error;
+    } finally {
+      setIsLoading(false);
+      setFetchingMovies(false);
     }
   }
 
@@ -39,10 +46,12 @@ const MoviesWrapper = () => {
   }
 
   function LoadMoreBtn() {
-    if (curPage <= MAX_NUM_OF_PAGES) {
+    if (curPage <= MAX_NUM_OF_PAGES && movies.length) {
       return (
         <div className={styles.flexCenter} onClick={loadMore}>
-          <button className={styles.loadMore}>LOAD MORE</button>
+          <button className={styles.loadMore} disabled={isLoading}>
+            {isLoading ? "LOADING..." : "LOAD MORE"}
+          </button>
         </div>
       );
     }
@@ -78,22 +87,28 @@ const MoviesWrapper = () => {
     setBGColor(JSON.parse(value));
   }
 
-   function applySearchFilters() {
-     setMovies([]);
-     fetch(
-       `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API}&language=en-US&sort_by=${filterType}&page=1`
-     )
-       .then((data) => {
-         try {
-           if (data.status !== 200) throw Error("Error applying filters");
-           return data.json();
-         } catch (error: any) {
-           console.error(error.message);
-         }
-       })
-       .then((res: Result) => setMovies([...res.results]))
-       .catch((er) => console.error(er.message));
-   }
+  function applySearchFilters() {
+    setMovies([]);
+    setFetchingMovies(true);
+    setIsLoading(true);
+    fetch(
+      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API}&language=en-US&sort_by=${filterType}&page=1`
+    )
+      .then((data) => {
+        try {
+          if (data.status !== 200) throw Error("Error applying filters");
+          return data.json();
+        } catch (error: any) {
+          console.error(error.message);
+        }
+      })
+      .then((res: Result) => setMovies([...res.results]))
+      .catch((er) => console.error(er.message))
+      .finally(() => {
+        setIsLoading(false);
+        setFetchingMovies(false);
+      });
+  }
 
   useEffect(() => fetchFromLocalStorage(), []);
 
@@ -116,6 +131,9 @@ const MoviesWrapper = () => {
       <div className={styles.container} style={BGColor}>
         <Filter setFilter={setFilter} applyFilters={applySearchFilters} />
         <div className={styles.flexRow}>
+          {fetchingMovies && (
+            <p className={styles.fetchingMovies}>Fetching Movies...</p>
+          )}
           {movies.map((movie) => (
             <MovieItem
               key={movie.id}
